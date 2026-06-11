@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeroPredict - Passenger Satisfaction Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-plane-departure brand-icon"></i>
+                <div class="brand-text">
+                    <h1>AeroPredict</h1>
+                    <span>Satisfaction Analytics</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-target="single-view">
+                    <i class="fa-solid fa-user-check"></i>
+                    <span>Single Predictor</span>
+                </button>
+                <button class="nav-item" data-target="bulk-view">
+                    <i class="fa-solid fa-file-import"></i>
+                    <span>Bulk Predictor</span>
+                </button>
+                <button class="nav-item" data-target="insights-view">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Model Insights</span>
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="model-badge">
+                    <i class="fa-solid fa-microchip"></i>
+                    <div>
+                        <p class="model-label">Active Model</p>
+                        <p class="model-name">Random Forest v1.0</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- View 1: Single Prediction Form -->
+            <section id="single-view" class="content-section active">
+                <header class="section-header">
+                    <h2>Passenger Satisfaction Predictor</h2>
+                    <p>Enter the passenger profile, flight details, and service ratings to predict flight satisfaction.</p>
+                </header>
+
+                <div class="dashboard-grid">
+                    <!-- Form Container -->
+                    <div class="card form-card">
+                        <form id="prediction-form">
+                            <!-- Category 1: Passenger Profile -->
+                            <div class="form-group-section">
+                                <h3 class="group-title"><i class="fa-solid fa-id-card"></i> Passenger Profile</h3>
+                                <div class="inputs-grid">
+                                    <div class="input-control">
+                                        <label for="Gender">Gender</label>
+                                        <select id="Gender" name="Gender" required>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-control">
+                                        <label for="Customer Type">Customer Type</label>
+                                        <select id="Customer Type" name="Customer Type" required>
+                                            <option value="Loyal Customer">Loyal Customer</option>
+                                            <option value="disloyal Customer">Disloyal Customer</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-control">
+                                        <label for="Age">Age (Years)</label>
+                                        <input type="number" id="Age" name="Age" min="1" max="120" value="35" required>
+                                    </div>
+                                    <div class="input-control">
+                                        <label for="Type of Travel">Type of Travel</label>
+                                        <select id="Type of Travel" name="Type of Travel" required>
+                                            <option value="Business travel">Business travel</option>
+                                            <option value="Personal Travel">Personal Travel</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-control">
+                                        <label for="Class">Class</label>
+                                        <select id="Class" name="Class" required>
+                                            <option value="Business">Business</option>
+                                            <option value="Eco">Economy</option>
+                                            <option value="Eco Plus">Economy Plus</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-control">
+                                        <label for="Flight Distance">Flight Distance (Miles)</label>
+                                        <input type="number" id="Flight Distance" name="Flight Distance" min="10" max="6000" value="750" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Category 2: Ground & Inflight Service Ratings -->
+                            <div class="form-group-section">
+                                <h3 class="group-title"><i class="fa-solid fa-star-half-stroke"></i> Service Ratings <span class="help-text">(Rate 0 to 5)</span></h3>
+                                <div class="ratings-grid">
+                                    <!-- Wifi -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Inflight Wifi Service</span>
+                                            <span class="rating-value" id="val-wifi">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Inflight wifi service" name="Inflight wifi service" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Seat Comfort -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Seat Comfort</span>
+                                            <span class="rating-value" id="val-seat">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Seat comfort" name="Seat comfort" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Food & Drink -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Food & Drink</span>
+                                            <span class="rating-value" id="val-food">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Food and drink" name="Food and drink" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Online Boarding -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Online Boarding</span>
+                                            <span class="rating-value" id="val-boarding">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Online boarding" name="Online boarding" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Ease of Online Booking -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Online Booking Ease</span>
+                                            <span class="rating-value" id="val-booking">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Ease of Online booking" name="Ease of Online booking" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Gate Location -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Gate Location Rating</span>
+                                            <span class="rating-value" id="val-gate">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Gate location" name="Gate location" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Inflight Entertainment -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Inflight Entertainment</span>
+                                            <span class="rating-value" id="val-ent">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Inflight entertainment" name="Inflight entertainment" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- On-board Service -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">On-board Service</span>
+                                            <span class="rating-value" id="val-onboard">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="On-board service" name="On-board service" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Leg Room Service -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Leg Room Service</span>
+                                            <span class="rating-value" id="val-legroom">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Leg room service" name="Leg room service" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Baggage Handling -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Baggage Handling</span>
+                                            <span class="rating-value" id="val-baggage">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Baggage handling" name="Baggage handling" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Check-in Service -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Check-in Service</span>
+                                            <span class="rating-value" id="val-checkin">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Checkin service" name="Checkin service" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Inflight Service -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Inflight Service</span>
+                                            <span class="rating-value" id="val-inflight">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Inflight service" name="Inflight service" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Cleanliness -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Cleanliness</span>
+                                            <span class="rating-value" id="val-clean">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Cleanliness" name="Cleanliness" min="0" max="5" value="3">
+                                    </div>
+                                    <!-- Departure/Arrival Convenient -->
+                                    <div class="rating-control">
+                                        <div class="rating-info">
+                                            <span class="rating-label">Time Convenient</span>
+                                            <span class="rating-value" id="val-convenient">3</span>
+                                        </div>
+                                        <input type="range" class="rating-slider" id="Departure/Arrival time convenient" name="Departure/Arrival time convenient" min="0" max="5" value="3">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Category 3: Delays -->
+                            <div class="form-group-section">
+                                <h3 class="group-title"><i class="fa-solid fa-clock"></i> Flight Delays</h3>
+                                <div class="inputs-grid">
+                                    <div class="input-control">
+                                        <label for="Departure Delay in Minutes">Departure Delay (Minutes)</label>
+                                        <input type="number" id="Departure Delay in Minutes" name="Departure Delay in Minutes" min="0" max="1500" value="0" required>
+                                    </div>
+                                    <div class="input-control">
+                                        <label for="Arrival Delay in Minutes">Arrival Delay (Minutes)</label>
+                                        <input type="number" id="Arrival Delay in Minutes" name="Arrival Delay in Minutes" min="0" max="1500" value="0" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fa-solid fa-calculator"></i> Predict Satisfaction
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Result Container -->
+                    <div class="card result-card">
+                        <div class="result-placeholder" id="result-placeholder">
+                            <i class="fa-solid fa-arrow-left placeholder-icon"></i>
+                            <h3>Awaiting Input</h3>
+                            <p>Fill out the passenger details form on the left and click "Predict Satisfaction" to see results.</p>
+                        </div>
+                        
+                        <div class="result-display hidden" id="result-display">
+                            <h3>Prediction Result</h3>
+                            <div class="satisfaction-badge" id="satisfaction-badge">
+                                <i class="fa-solid" id="badge-icon"></i>
+                                <span id="badge-text">Satisfied</span>
+                            </div>
+                            
+                            <!-- Circular Progress / Semi-gauge -->
+                            <div class="gauge-container">
+                                <svg class="gauge" viewBox="0 0 100 100">
+                                    <circle class="gauge-bg" cx="50" cy="50" r="40"></circle>
+                                    <circle class="gauge-fill" id="gauge-fill" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                                </svg>
+                                <div class="gauge-percentage" id="gauge-percentage">84.2%</div>
+                            </div>
+                            
+                            <p class="result-description">
+                                There is a <strong id="satisfied-probability">84.2%</strong> chance that this passenger will report being 
+                                <strong id="satisfied-status-word">satisfied</strong> with their airline experience.
+                            </p>
+
+                            <div class="result-breakdown">
+                                <h4>Score Breakdown</h4>
+                                <div class="metric-bar">
+                                    <div class="bar-labels">
+                                        <span>Satisfied Probability</span>
+                                        <span id="label-sat-prob">84.2%</span>
+                                    </div>
+                                    <div class="bar-track">
+                                        <div class="bar-fill sat" id="fill-sat-prob" style="width: 84.2%"></div>
+                                    </div>
+                                </div>
+                                <div class="metric-bar">
+                                    <div class="bar-labels">
+                                        <span>Neutral / Dissatisfied Probability</span>
+                                        <span id="label-unsat-prob">15.8%</span>
+                                    </div>
+                                    <div class="bar-track">
+                                        <div class="bar-fill unsat" id="fill-unsat-prob" style="width: 15.8%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 2: Bulk Prediction -->
+            <section id="bulk-view" class="content-section">
+                <header class="section-header">
+                    <h2>Bulk Passenger Satisfaction Predictor</h2>
+                    <p>Upload a CSV file containing passenger details to make satisfaction predictions in bulk.</p>
+                </header>
+
+                <div class="card bulk-card">
+                    <div class="upload-zone" id="upload-zone">
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                        <h3>Drag & Drop CSV file here</h3>
+                        <p>or click to browse your files</p>
+                        <input type="file" id="csv-file-input" accept=".csv" class="hidden">
+                    </div>
+                    
+                    <div class="file-details hidden" id="file-details">
+                        <i class="fa-solid fa-file-csv csv-icon"></i>
+                        <div>
+                            <p class="file-name" id="file-name">passengers_data.csv</p>
+                            <p class="file-size" id="file-size">124 KB</p>
+                        </div>
+                        <button class="btn btn-danger btn-sm" id="btn-remove-file">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+
+                    <div class="csv-requirements">
+                        <h4><i class="fa-solid fa-circle-info"></i> CSV Requirements</h4>
+                        <p>Your CSV must contain the following headers (order does not matter):</p>
+                        <div class="tags-container">
+                            <span class="tag">Gender</span>
+                            <span class="tag">Customer Type</span>
+                            <span class="tag">Age</span>
+                            <span class="tag">Type of Travel</span>
+                            <span class="tag">Class</span>
+                            <span class="tag">Flight Distance</span>
+                            <span class="tag">Inflight wifi service</span>
+                            <span class="tag">Departure/Arrival time convenient</span>
+                            <span class="tag">Ease of Online booking</span>
+                            <span class="tag">Gate location</span>
+                            <span class="tag">Food and drink</span>
+                            <span class="tag">Online boarding</span>
+                            <span class="tag">Seat comfort</span>
+                            <span class="tag">Inflight entertainment</span>
+                            <span class="tag">On-board service</span>
+                            <span class="tag">Leg room service</span>
+                            <span class="tag">Baggage handling</span>
+                            <span class="tag">Checkin service</span>
+                            <span class="tag">Inflight service</span>
+                            <span class="tag">Cleanliness</span>
+                            <span class="tag">Departure Delay in Minutes</span>
+                            <span class="tag">Arrival Delay in Minutes</span>
+                        </div>
+                        <p class="download-template-container">
+                            Want a sample CSV to test? 
+                            <a href="#" id="download-template"><i class="fa-solid fa-download"></i> Download Sample CSV Template</a>
+                        </p>
+                    </div>
+
+                    <button class="btn btn-success btn-block hidden" id="btn-predict-bulk">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Process & Predict Satisfaction
+                    </button>
+                    
+                    <div class="progress-container hidden" id="bulk-progress">
+                        <div class="spinner"></div>
+                        <p>Processing CSV dataset and generating predictions. Please wait...</p>
+                    </div>
+
+                    <div class="download-container hidden" id="bulk-download">
+                        <div class="success-message">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <h3>Processing Complete!</h3>
+                            <p>Predictions have been generated and appended to the dataset successfully.</p>
+                        </div>
+                        <a href="#" class="btn btn-primary btn-block" id="btn-download-results">
+                            <i class="fa-solid fa-file-arrow-down"></i> Download Predicted Dataset (CSV)
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 3: Model Insights -->
+            <section id="insights-view" class="content-section">
+                <header class="section-header">
+                    <h2>Model Insights & Metrics</h2>
+                    <p>Performance evaluation metrics and confusion analysis for the active Random Forest classifier.</p>
+                </header>
+
+                <div class="insights-grid">
+                    <!-- Metric Cards -->
+                    <div class="metrics-cards-row">
+                        <div class="card metric-card">
+                            <div class="metric-label">Model Accuracy</div>
+                            <div class="metric-val" id="metric-accuracy">--%</div>
+                            <p class="metric-desc">Percentage of correct predictions out of all samples in test set.</p>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="metric-label">F1-Score</div>
+                            <div class="metric-val" id="metric-f1">--%</div>
+                            <p class="metric-desc">Harmonic mean of precision and recall. Ideal for balanced performance.</p>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="metric-label">Precision</div>
+                            <div class="metric-val" id="metric-precision">--%</div>
+                            <p class="metric-desc">Out of all predicted satisfied, percentage that were actually satisfied.</p>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="metric-label">Recall</div>
+                            <div class="metric-val" id="metric-recall">--%</div>
+                            <p class="metric-desc">Out of all actual satisfied, percentage that the model identified.</p>
+                        </div>
+                    </div>
+
+                    <!-- Confusion Matrix and Feature Analysis -->
+                    <div class="insights-details">
+                        <div class="card chart-card">
+                            <h3>Confusion Matrix</h3>
+                            <div class="chart-container">
+                                <img src="/reports/confusion_matrix.png" alt="Model Confusion Matrix" id="confusion-matrix-img" onerror="this.src='placeholder.png'; this.style.opacity=0.3;">
+                            </div>
+                        </div>
+                        
+                        <div class="card text-card">
+                            <h3>Model Performance Analysis</h3>
+                            <p>The model is a <strong>Random Forest Classifier</strong> optimized using <strong>GridSearchCV</strong> (3-fold cross-validation) on a dataset of 103,904 airline passenger satisfaction records.</p>
+                            
+                            <h4>Key Achievements:</h4>
+                            <ul>
+                                <li><strong>Highly Balanced Predictor:</strong> Maintained high precision (96.9%) and recall (94.5%), meaning both satisfied and dissatisfied passengers are correctly classified without severe bias.</li>
+                                <li><strong>Effective Handling of Outliers:</strong> Missing values in <em>Arrival Delay</em> were imputed using the median, and extreme outlier records were removed using customized distance and delay thresholds.</li>
+                                <li><strong>Feature Scaling:</strong> All ratings and numerical characteristics were normalized using <em>StandardScaler</em> to prevent delay values from dominating the distance metrics.</li>
+                            </ul>
+                            
+                            <h4>Random Forest Hyperparameters:</h4>
+                            <ul class="hyperparams-list">
+                                <li><strong>n_estimators:</strong> 100</li>
+                                <li><strong>max_depth:</strong> 20</li>
+                                <li><strong>min_samples_split:</strong> 5</li>
+                                <li><strong>min_samples_leaf:</strong> 1</li>
+                                <li><strong>bootstrap:</strong> True</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
