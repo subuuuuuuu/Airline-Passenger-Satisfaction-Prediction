@@ -1,0 +1,74 @@
+# Configuration for Airline Passenger Satisfaction Prediction Pipeline
+
+data:
+  raw_path: "data/raw/train.csv"
+  train_path: "data/processed/train.csv"
+  test_path: "data/processed/test.csv"
+  test_size: 0.2
+  random_state: 42
+
+preprocessing:
+  drop_columns:
+    - ""
+    - "id"
+  imputation:
+    strategy: "median"
+    columns:
+      - "Arrival Delay in Minutes"
+  outliers:
+    method: "hardcoded"  # options: 'hardcoded', 'zscore', 'none'
+    hardcoded_thresholds:
+      Flight Distance: 3995
+      Departure Delay in Minutes: 750
+      Arrival Delay in Minutes: 545
+    zscore_threshold: 3.0
+
+features:
+  target_column: "satisfaction"
+  target_mapping:
+    "neutral or dissatisfied": 0
+    "satisfied": 1
+  categorical_columns:
+    - "Gender"
+    - "Customer Type"
+    - "Type of Travel"
+    - "Class"
+  numerical_columns:
+    - "Age"
+    - "Flight Distance"
+    - "Inflight wifi service"
+    - "Departure/Arrival time convenient"
+    - "Ease of Online booking"
+    - "Gate location"
+    - "Food and drink"
+    - "Online boarding"
+    - "Seat comfort"
+    - "Inflight entertainment"
+    - "On-board service"
+    - "Leg room service"
+    - "Baggage handling"
+    - "Checkin service"
+    - "Inflight service"
+    - "Cleanliness"
+    - "Departure Delay in Minutes"
+    - "Arrival Delay in Minutes"
+
+model:
+  model_path: "models/random_forest_model.pkl"
+  scaler_path: "models/scaler.pkl"
+  encoder_path: "models/encoder.pkl"
+  random_state: 42
+  grid_search:
+    param_grid:
+      n_estimators: [50, 100]
+      max_depth: [10, 20]
+      min_samples_split: [2, 5]
+      min_samples_leaf: [1, 2]
+      bootstrap: [true]
+    cv: 3
+    scoring: "accuracy"
+    n_jobs: -1
+
+reports:
+  confusion_matrix_path: "reports/confusion_matrix.png"
+  metrics_path: "reports/metrics.json"
